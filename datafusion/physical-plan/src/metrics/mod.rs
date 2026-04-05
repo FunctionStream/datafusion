@@ -321,6 +321,10 @@ impl MetricsSet {
 
         Self { metrics }
     }
+
+    pub fn clear(&mut self) {
+        self.metrics.clear();
+    }
 }
 
 impl Display for MetricsSet {
@@ -365,14 +369,19 @@ impl ExecutionPlanMetricsSet {
     }
 
     /// Add the specified metric to the underlying metric set
-    pub fn register(&self, metric: Arc<Metric>) {
-        self.inner.lock().push(metric)
+    pub fn register(&self, _metric: Arc<Metric>) {
+        //self.inner.lock().push(metric)
     }
 
     /// Return a clone of the inner [`MetricsSet`]
     pub fn clone_inner(&self) -> MetricsSet {
         let guard = self.inner.lock();
         (*guard).clone()
+    }
+
+    pub fn reset(&self) {
+        let mut guard = self.inner.lock();
+        guard.clear();
     }
 }
 
